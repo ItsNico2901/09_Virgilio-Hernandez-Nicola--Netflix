@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./bootstrap-5.3.6-dist/css/bootstrap.css" />
+    <script src="./bootstrap-5.3.6-dist/js/bootstrap.bundle.js"></script>
+    <title>Copia Netflix</title>
+    <style>
+      .navbar-gradient {
+       background: #000000;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="zindex-fixed fixed-top w-100 h-100">
+      <video
+        autoplay
+        muted
+        playsinline
+        style="width: 100vw; height: 100vh; object-fit: cover"
+      >
+        <source src="./assets/video/videoplayback.webm" type="video/webm" />
+      </video>
+    </div>
+    <header>
+      <nav class="navbar navbar-gradient px-4 py-2 fixed-top">
+        <a class="navbar-brand" href="#">
+          <img src="./assets/img/logo.png" alt="logo.png" height="33" />
+        </a>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link active text-white" aria-current="page" href="#"
+              >Inicio</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">Peliculas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">Series</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">Juegos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">Novedades más vistas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">Explorar idiomas</a>
+          </li>
+        </ul>
+        <ul class="nav ms-auto py-2 align-items-center gap-3 text-center text-white">
+
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#"
+                ><img src="./assets/img/bell.svg" alt="Notificaciones"
+                /></a>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#"
+              ><img src="./assets/img/lupa.svg" alt="Buscar"
+            /></a>
+          </li>
+          <li class="nav-item text-white">
+            <a class="nav-link text-white" href="#">Infantil</a>
+          </li>
+          <li class="nav-item text-white">
+            <img src="./assets/img/profile.png" alt="">
+            <span>Nicola</span>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  </body>
+</html>
