@@ -3,95 +3,743 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./bootstrap-5.3.6-dist/css/bootstrap.css" />
-    <script src="./bootstrap-5.3.6-dist/js/bootstrap.bundle.js"></script>
-    <title>Copia Netflix</title>
+    <title>NICFLIX</title>
+    <link rel="icon" href="./assets/img/favicon.png" type="image/png" />
+    <!-- Bootstrap CSS y Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
     <style>
-      .navbar-gradient {
-        background: #000000;
+      /* Navbar: transparencia inicial y transición */
+      #mainNav {
         background: linear-gradient(
           180deg,
           rgba(0, 0, 0, 1) 0%,
-          rgba(255, 255, 255, 0) 100%
+          rgba(0, 0, 0, 0) 100%
         );
+        transition: background 0.3s;
+      }
+      /* Overlay hover */
+      .slider-item .overlay,
+      .movie-card .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        opacity: 1;
+        transition: opacity 0.3s;
+      }
+      .slider-item:hover .overlay,
+      .movie-card:hover .overlay {
+        opacity: 1;
+      }
+
+      .modal-backdrop.show {
+        backdrop-filter: blur(5px);
       }
     </style>
   </head>
+  <body class="bg-black text-white">
+    <!-- NAVBAR -->
+    <!--El navbar tiene un fondo transparente al inicio y se vuelve oscuro al hacer scroll.  -->
 
-  <body>
-    <div class="position-fixed top-0 start-0 w-100 h-100 z-1">
-      <video autoplay muted playsinline class="w-100 h-100 object-fit-cover">
+    <nav id="mainNav" class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container-fluid px-4">
+        <a class="navbar-brand text-danger fw-bold fs-3" href="#">NICFLIX</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Películas</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Series</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Juegos</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Novedades más vistas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Explorar idiomas</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="bi bi-bell fs-5"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="bi bi-search fs-5"></i></a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#">Infantil</a></li>
+            <li class="nav-item d-flex align-items-center">
+              <img
+                src="./assets/img/profile.png"
+                alt="Perfil"
+                class="img-fluid"
+                style="width: 32px; height: 32px"
+              />
+              <span class="ms-2">Nicola</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO CON VIDEO DE FONDO -->
+    <section class="position-relative overflow-hidden vh-100">
+      <video
+        autoplay
+        muted
+        playsinline
+        loop
+        class="position-absolute top-0 start-0 w-100 h-100"
+        style="object-fit: cover"
+      >
         <source src="./assets/video/videoplayback.webm" type="video/webm" />
       </video>
-    </div>
-    <header>
-      <nav class="navbar navbar-gradient px-4 py-2 fixed-top">
-        <a class="navbar-brand" href="#">
-          <img src="./assets/img/logo.png" alt="logo.png" height="33" />
-        </a>
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link active text-white" aria-current="page" href="#"
-              >Inicio</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">Peliculas</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">Series</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">Juegos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">Novedades más vistas</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#">Explorar idiomas</a>
-          </li>
-        </ul>
-        <ul
-          class="nav ms-auto py-2 align-items-center gap-3 text-center text-white"
-        >
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#"
-              ><img src="./assets/img/bell.svg" alt="Notificaciones"
-            /></a>
-          </li>
+      <div
+        class="position-absolute bottom-0 start-0 p-4"
+        style="max-width: 45%"
+      >
+        <img
+          src="./assets/img/title_hero.png"
+          alt="Mala Influencia"
+          class="img-fluid mb-3"
+        />
+        <p class="lead mb-4">
+          Un exconvicto recibe la oportunidad de empezar de cero como
+          guardaespaldas de una rica heredera ante un acosador. Cuanto más se
+          conocen, más irresistible es su química.
+        </p>
+        <div class="d-flex gap-2">
+          <button class="btn btn-light">
+            <i class="bi bi-play-fill"></i> Reproducir
+          </button>
+          <button class="btn btn-secondary">
+            <i class="bi bi-info-circle"></i> Más información
+          </button>
+        </div>
+      </div>
+    </section>
 
-          <li class="nav-item">
-            <a class="nav-link text-white" href="#"
-              ><img src="./assets/img/lupa.svg" alt="Buscar"
-            /></a>
-          </li>
-          <li class="nav-item text-white">
-            <a class="nav-link text-white" href="#">Infantil</a>
-          </li>
-          <li class="nav-item text-white">
-            <img src="./assets/img/profile.png" alt="" />
-            <span>Nicola</span>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <!-- SECCIÓN DE PELÍCULAS -->
+
+    <section class="container-fluid mt-4">
+      <!-- CARRUSEL DE RECOMENDACIONES (5 por slide) -->
+      <div class="container-fluid mt-2">
+        <h4 class="mb-3">Recomendaciones de hoy para ti</h4>
+        <div
+          id="recommendCarousel"
+          class="carousel slide"
+          data-bs-ride="carousel"
+        >
+          <div class="carousel-inner">
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+              <div class="d-flex">
+                <!-- 1 -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-bs-toggle="modal"
+                    data-bs-target="#movieModal"
+                    data-title="Mala Influencia"
+                    data-description="Un exconvicto abre un nuevo camino en la vida…"
+                    data-img="./assets/img/carteles/malainfluencia.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/malainfluencia.webp"
+                      class="card-img rounded"
+                      alt="Mala Influencia"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Mala Influencia</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 2 -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-bs-toggle="modal"
+                    data-bs-target="#movieModal"
+                    data-title="Extraterritorial"
+                    data-description="Investigación diplomática al límite…"
+                    data-img="./assets/img/carteles/extraterritorial.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/extraterritorial.webp"
+                      class="card-img rounded"
+                      alt="Extraterritorial"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Extraterritorial</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 3 -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-bs-toggle="modal"
+                    data-bs-target="#movieModal"
+                    data-title="El jardinero"
+                    data-description="Drama rural con secretos ocultos…"
+                    data-img="./assets/img/carteles/eljardinero.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/eljardinero.webp"
+                      class="card-img rounded"
+                      alt="El jardinero"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">El jardinero</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 4 -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-bs-toggle="modal"
+                    data-bs-target="#movieModal"
+                    data-title="Inside Man: Most Wanted"
+                    data-description="Secuela del famoso atraco…"
+                    data-img="./assets/img/carteles/insideman.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/insideman.webp"
+                      class="card-img rounded"
+                      alt="Inside Man: Most Wanted"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Inside Man: Most Wanted</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 5 -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-bs-toggle="modal"
+                    data-bs-target="#movieModal"
+                    data-title="Estragos"
+                    data-description="Crimen y consecuencias…"
+                    data-img="./assets/img/carteles/estragos.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/estragos.webp"
+                      class="card-img rounded"
+                      alt="Estragos"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Estragos</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+              <div class="d-flex">
+                <!-- 6 -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-bs-toggle="modal"
+                    data-bs-target="#movieModal"
+                    data-title="Karol G: Mañana será bonito"
+                    data-description="Concierto documental…"
+                    data-img="./assets/img/carteles/karolg.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/karolg.webp"
+                      class="card-img rounded"
+                      alt="Karol G: Mañana será bonito"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Karol G: Mañana será bonito</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 7 -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-bs-toggle="modal"
+                    data-bs-target="#movieModal"
+                    data-title="Focus"
+                    data-description="Antología tecnológica…"
+                    data-img="./assets/img/carteles/focus.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/focus.webp"
+                      class="card-img rounded"
+                      alt=""
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Focus</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 8 -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-bs-toggle="modal"
+                    data-bs-target="#movieModal"
+                    data-title="Nonnas"
+                    data-description="Familia y recetas…"
+                    data-img="./assets/img/carteles/nonnas.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/nonnas.webp"
+                      class="card-img rounded"
+                      alt="Nonnas"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Nonnas</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 9 -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-bs-toggle="modal"
+                    data-bs-target="#movieModal"
+                    data-title="Baila, Vini"
+                    data-description="Pasión por la danza…"
+                    data-img="./assets/img/carteles/bailavini.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/bailavini.webp"
+                      class="card-img rounded"
+                      alt="Baila, Vini"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Baila, Vini</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 10 -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-bs-toggle="modal"
+                    data-bs-target="#movieModal"
+                    data-title="Los secretos que ocultamos"
+                    data-description="Verdades bajo llave…"
+                    data-img="./assets/img/carteles/secretos.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/secretos.webp"
+                      class="card-img rounded"
+                      alt="Los secretos que ocultamos"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Los secretos que ocultamos</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- controles -->
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#recommendCarousel"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#recommendCarousel"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Siguiente</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE DOCUSERIES -->
+    <section>
+      <div class="container-fluid mt-5">
+        <h4 class="mb-3">Docuseries</h4>
+        <div id="docsCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <!-- Slide 1 -->
+            <div class="carousel-item active">
+              <div class="d-flex">
+                <!-- 1: Cacería implacable -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-title="Cacería implacable: Osama Bin Laden"
+                    data-description="Un operativo encubierto para capturar al terrorista más buscado…"
+                    data-img="./assets/img/carteles/osamabinladen.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/osamabinladen.webp"
+                      class="card-img rounded"
+                      alt="Cacería implacable"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Cacería implacable</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 2: Sin instrucciones -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-title="Sin instrucciones"
+                    data-description="Aventuras y caos cuando menos lo esperas…"
+                    data-img="./assets/img/carteles/sininstruciones.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/sininstruciones.webp"
+                      class="card-img rounded"
+                      alt="Sin instrucciones"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Sin instrucciones</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 3: Legado -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-title="Legado"
+                    data-description="Cuando el pasado regresa con consecuencias inesperadas…"
+                    data-img="./assets/img/carteles/legado.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/legado.webp"
+                      class="card-img rounded"
+                      alt="Legado"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Legado</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 4: Apuesta -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-title="Apuesta"
+                    data-description="Riesgos, traición y dinero en juego…"
+                    data-img="./assets/img/carteles/apuesta.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/apuesta.webp"
+                      class="card-img rounded"
+                      alt="Apuesta"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Apuesta</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 5: The Rookie -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-title="The Rookie"
+                    data-description="Un hombre de 45 años comienza su sueño en el LAPD…"
+                    data-img="./assets/img/carteles/rookie.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/rookie.webp"
+                      class="card-img rounded"
+                      alt="The Rookie"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">The Rookie</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+              <div class="d-flex">
+                <!-- 6: You -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-title="You"
+                    data-description="Obsesión y peligro tras cada página…"
+                    data-img="./assets/img/carteles/you.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/you.webp"
+                      class="card-img rounded"
+                      alt="You"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">You</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 7: 21: Blackjack -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-title="21: Blackjack"
+                    data-description="La cancha del azar y la estrategia…"
+                    data-img="./assets/img/carteles/21blackjack.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/21blackjack.webp"
+                      class="card-img rounded"
+                      alt="21: Blackjack"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">21: Blackjack</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 8: El Eternauta -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-title="El Eternauta"
+                    data-description="Supervivencia contra la invasión helada…"
+                    data-img="./assets/img/carteles/eternauta.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/eternauta.webp"
+                      class="card-img rounded"
+                      alt="El Eternauta"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">El Eternauta</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 9: Black Mirror -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-title="Black Mirror"
+                    data-description="Ficción tecnológica que asusta…"
+                    data-img="./assets/img/carteles/blackmirror.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/blackmirror.webp"
+                      class="card-img rounded"
+                      alt="Black Mirror"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Black Mirror</h6>
+                    </div>
+                  </div>
+                </div>
+                <!-- 10: Nonnas -->
+                <div class="p-2" style="flex: 0 0 20%; max-width: 20%">
+                  <div
+                    class="card bg-dark text-white border-0 movie-card"
+                    data-title="Nonnas"
+                    data-description="Recetas y risas en familia…"
+                    data-img="./assets/img/carteles/nonnas.webp"
+                  >
+                    <img
+                      src="./assets/img/carteles/nonnas.webp"
+                      class="card-img rounded"
+                      alt="Nonnas"
+                    />
+                    <div
+                      class="card-img-overlay d-flex align-items-end p-0 bg-dark bg-opacity-50"
+                    >
+                      <h6 class="m-2">Nonnas</h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- controles -->
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#docsCarousel"
+            data-bs-slide="prev"
+            style="width: 40px; z-index: 3"
+          >
+            <span class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#docsCarousel"
+            data-bs-slide="next"
+            style="width: 40px; z-index: 3"
+          >
+            <span class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Siguiente</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal de película -->
+    <!-- Este modal se activa al hacer clic en una película y muestra más información. -->
+    <!-- Se recupera la información de la película a través de atributos de datos en el elemento de la tarjeta. -->
 
     <div
-      class="container z-2 text-white position-absolute h-25 mx-5"
-      style="top: 35%"
+      class="modal fade"
+      id="movieModal"
+      tabindex="-1"
+      aria-labelledby="movieModalTitle"
+      aria-hidden="true"
     >
-      <div class="d-flex gap-0 mb-2">
-        <img src="./assets/img/favicon.png " class="align-bottom" height="30" />
-        <span class="fs-5 fw-semibold align-bottom">PELÍCULA</span>
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div
+          class="modal-content bg-dark bg-opacity-90 text-white border-0 rounded-2 p-2"
+        >
+          <div class="modal-header border-0 p-2">
+            <h5 id="movieModalTitle" class="modal-title fs-2 fw-bold"></h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Cerrar"
+            ></button>
+          </div>
+          <div class="modal-body p-0">
+            <div class="row g-0">
+              <!-- Poster -->
+              <div class="col-md-4">
+                <img
+                  id="movieModalImg"
+                  src=""
+                  alt="Poster ampliado"
+                  class="img-fluid w-100 h-100 object-fit-cover"
+                />
+              </div>
+              <!-- Contenido -->
+              <div class="col-md-8">
+                <div class="p-4">
+                  <!-- Descripción -->
+                  <p id="movieModalDescription" class="mb-4 lh-lg"></p>
+                  <!-- Botones de acción -->
+                  <div class="d-flex gap-3">
+                    <button class="btn btn-light btn-lg px-4">
+                      <i class="bi bi-play-fill fs-4"></i>
+                      <span class="fw-semibold">Ver trailer</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <img src="./assets/img/title_hero.png" alt="" />
-      <p class="fs-4 w-50 text-wrap p-0">
-        Un exconvicto recibe la oportunidad de empezar de cero como
-        guardaespaldas de una rica heredera ante un acosador. Cuanto más se
-        conocen, más irresistible es su química..
-      </p>
     </div>
 
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Modal de película
 
+      document.addEventListener("DOMContentLoaded", function () {
+        const movieModal = new bootstrap.Modal(
+          document.getElementById("movieModal")
+        );
+        const movieModalTitle = document.getElementById("movieModalTitle");
+        const movieModalDescription = document.getElementById(
+          "movieModalDescription"
+        );
+        const movieModalImg = document.getElementById("movieModalImg");
+        const movieCards = document.querySelectorAll(".movie-card");
+
+        movieCards.forEach((card) => {
+          card.addEventListener("click", function () {
+            const title = this.getAttribute("data-title");
+            const description = this.getAttribute("data-description");
+            const imgSrc = this.getAttribute("data-img");
+
+            movieModalTitle.textContent = title;
+            movieModalDescription.textContent = description;
+            movieModalImg.src = imgSrc;
+
+            movieModal.show();
+          });
+        });
+      });
+
+      // Controlar transparencia navbar al hacer scroll
+      // Al hacer scroll, el navbar cambia de transparente a oscuro.
+
+      window.addEventListener("scroll", function () {
+        const nav = document.getElementById("mainNav");
+        if (window.scrollY > 50) nav.classList.add("bg-black");
+        else nav.classList.remove("bg-black");
+      });
+    </script>
   </body>
 </html>
